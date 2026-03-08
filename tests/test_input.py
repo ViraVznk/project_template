@@ -59,5 +59,32 @@ class TestReadFilePandas(unittest.TestCase):
         finally:
             os.remove(tmp_path)
 
+    def test_rfp_correct_columns(self):
+        """
+        The DataFrame must contain columns that match the CSV header.
+        """
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv",delete=False, encoding="utf-8") as t:
+            t.write("Кіт,Частини\nМуся,вуса\nМуся,лапи\n")
+            tmp_path = t.name
+
+        try:
+            res = read_file_pandas(tmp_path)
+            self.assertListEqual(list(res.columns), ["Кіт", "Частини"])
+        finally:
+            os.remove(tmp_path)
+
+
+    def test_rfp_raises_for_missing_file(self):
+        """
+        read_file_pandas should throw FileNotFoundError if the file does not exist.
+        """
+        try:
+            read_file_pandas("/not/found/path/file.csv")
+        except FileNotFoundError:
+            pass
+        else:
+            self.fail("I expected an error, but something went wrong.")
+
+
 if __name__ == '__main__':
     unittest.main()
