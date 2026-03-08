@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 
-from app.io.input import read_file
+from app.io.input import *
 
 
 class TestReadFile(unittest.TestCase):
@@ -33,6 +33,31 @@ class TestReadFile(unittest.TestCase):
         finally:
             os.remove(tmp_path)
 
+    def test_rf_raises_for_missing_file(self):
+        """
+        read_file should throw FileNotFoundError if the file does not exist.
+        """
+        try:
+            read_file("/not/found/path/file.txt")
+        except FileNotFoundError:
+            pass
+        else:
+            self.fail("I expected an error, but something went wrong.")
+
+
+class TestReadFilePandas(unittest.TestCase):
+    def test_rfp_returns_dataframe(self):
+        """
+        read_file_pandas should return a pandas DataFrame object.
+        """
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv",delete=False, encoding="utf-8") as t:
+            t.write("Щось\nЩось\nЩось, важливе\n")
+            tmp_path = t.name
+        try:
+            res = read_file_pandas(tmp_path)
+            self.assertIsInstance(res, pd.DataFrame)
+        finally:
+            os.remove(tmp_path)
 
 if __name__ == '__main__':
     unittest.main()
