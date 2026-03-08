@@ -20,6 +20,19 @@ class TestReadFile(unittest.TestCase):
         finally:
             os.remove(t_path)
 
+    def test_rf_returns_string(self):
+        """
+        read_file must return type str
+        """
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as t:
+            t.write("read_file must return type str")
+            tmp_path = t.name
+        try:
+            res = read_file(tmp_path)
+            self.assertIsInstance(res, str)
+        finally:
+            os.remove(tmp_path)
+
 
 if __name__ == '__main__':
     unittest.main()
