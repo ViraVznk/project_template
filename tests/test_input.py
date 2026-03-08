@@ -51,7 +51,7 @@ class TestReadFilePandas(unittest.TestCase):
         read_file_pandas should return a pandas DataFrame object.
         """
         with tempfile.NamedTemporaryFile(mode="w", suffix=".csv",delete=False, encoding="utf-8") as t:
-            t.write("Щось\nЩось\nЩось, важливе\n")
+            t.write("1,Щось\n2,Щось\n3,Щось\n")
             tmp_path = t.name
         try:
             res = read_file_pandas(tmp_path)
