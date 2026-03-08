@@ -1,5 +1,7 @@
 from app.io.input import *
 from app.io.output import *
+import unittest
+
 
 def main():
     test_inpt = input_text()
@@ -12,6 +14,5 @@ def main():
     write_file("data/output.txt", test_read)
     write_file_pandas("data/output1.csv", test_read_pandas)
 
-    pass
 if __name__ == '__main__':
     main()
